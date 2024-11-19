@@ -22,6 +22,15 @@ func Clone(src string, dest string, srcOffset uint64, destOffset uint64, size ui
 	return clone(src, dest, srcOffset, destOffset, size)
 }
 
+func CloneRangeByFd(srcFD uintptr, destFd uintptr, srcOffset uint64, destOffset uint64, size uint64) error {
+	var args cloneRangeArgs
+	args.Src_fd = int64(srcFD)
+	args.Src_offset = srcOffset
+	args.Src_length = size
+	args.Dest_offset = destOffset
+	return callWriteIoctl(destFd, BTRFS_IOC_CLONE_RANGE, &args)
+}
+
 func clone(src string, dest string, srcOffset uint64, destOffset uint64, size uint64) error {
 	srcFile, err := os.OpenFile(src, os.O_RDONLY, 0600)
 	if err != nil {
