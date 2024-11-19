@@ -1,4 +1,4 @@
-module github.com/tinyzimmer/btrsync
+module github.com/lieck/btrsync
 
 go 1.19
 
